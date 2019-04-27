@@ -2,6 +2,7 @@
     <div id="container">
         <div id="left">
             <DocumentsList/>
+            <a href="#">New Document</a>
         </div>
         <div id="right">
             <DocumentViewer/>
@@ -23,8 +24,10 @@
 </script>
 
 <style>
+
     html {
         height: 100%;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
     }
 
     body {

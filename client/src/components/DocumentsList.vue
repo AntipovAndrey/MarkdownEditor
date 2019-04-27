@@ -1,6 +1,6 @@
 <template>
     <ul>
-        <li v-for="(docPreview, index) in availableDocuments" v-bind:key="index"
+        <li v-for="(docPreview, index) in documents.availableDocuments" v-bind:key="index"
             v-on:click="selectDocument(docPreview.id)">
             {{ docPreview.title }}
             {{ docPreview.created }}
@@ -16,18 +16,15 @@
     mounted() {
       this.$store.dispatch('loadDocumentsList')
     },
-    computed: mapState([
-      'availableDocuments'
-    ]),
+    computed: mapState(['documents']),
     methods: {
-      ...mapActions([
-        'selectDocument'
-      ]),
+      ...mapActions(['selectDocument']),
     }
   }
 </script>
 
 <style scoped>
+
     ul {
         list-style-type: none;
         padding: 0;

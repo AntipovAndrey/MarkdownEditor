@@ -1,22 +1,17 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import markdownApi from '../api/markdown'
 
-import markdownApi from './api/markdown'
-
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default {
   state: {
     currentDocument: null,
-    loadedDocuments: {},
-    availableDocuments: []
+    availableDocuments: [],
+    _loadedDocuments: {}
   },
   mutations: {
     SELECT_DOCUMENT: (state, currentDocument) => {
       state.currentDocument = currentDocument;
     },
     ADD_LOADED_DOCUMENT: (state, {id, document}) => {
-      state.loadedDocuments[id] = document;
+      state._loadedDocuments[id] = document;
     },
     LOAD_DOCUMENTS_LIST: (state, documentPreviews) => {
       state.availableDocuments = documentPreviews;
@@ -24,7 +19,7 @@ export default new Vuex.Store({
   },
   actions: {
     selectDocument: async ({state, commit}, documentId) => {
-      let doc = state.loadedDocuments[documentId];
+      let doc = state._loadedDocuments[documentId];
       if (!doc) {
         const {data, status} = await markdownApi.get(documentId);
         if (status < 300) {
@@ -41,8 +36,4 @@ export default new Vuex.Store({
       }
     }
   },
-  getters: {
-    currentDocument: state => state.currentDocument,
-    availableDocuments: state => state.availableDocuments
-  }
-});
+};
