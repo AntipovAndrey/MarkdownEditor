@@ -11,4 +11,10 @@ export default {
       state.contentText = text;
     },
   },
+  actions: {
+    resetForm: ({commit}) => {
+      commit('UPDATE_TITLE_TEXT', '');
+      commit('UPDATE_CONTENT_TEXT', '');
+    }
+  }
 };

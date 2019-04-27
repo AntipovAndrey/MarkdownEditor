@@ -32,7 +32,7 @@ export default {
         }
       }
       commit('SELECT_DOCUMENT', doc);
-      router.push('edit')
+      router.push('edit');
     },
     loadDocumentsList: async ({commit}) => {
       const {status, data} = await markdownApi.get();
@@ -50,8 +50,15 @@ export default {
             ...doc
           }
         });
+        dispatch('loadDocumentsList');
       }
-      dispatch('loadDocumentsList');
+    },
+    createNewDocument: async ({dispatch}, doc) => {
+      const {status} = await markdownApi.post('', doc);
+      if (status < 300) {
+        dispatch('loadDocumentsList');
+        router.push('new');
+      }
     }
   },
 };

@@ -3,7 +3,6 @@
         <li v-for="(docPreview, index) in documents.availableDocuments" v-bind:key="index"
             v-on:click="selectDocument(docPreview.id)">
             {{ docPreview.title }}
-            {{ docPreview.created }}
         </li>
     </ul>
 </template>

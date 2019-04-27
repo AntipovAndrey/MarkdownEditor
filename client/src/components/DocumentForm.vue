@@ -30,10 +30,6 @@
         this.$emit('submitted', {title: this.editingTitle, content: this.editingMarkdown})
       }
     },
-    mounted() {
-      this.UPDATE_CONTENT_TEXT(this.doc.content);
-      this.UPDATE_TITLE_TEXT(this.doc.title);
-    },
     computed: {
       ...mapState(['form']),
       editingMarkdown: {
@@ -55,6 +51,15 @@
       compiledMarkdown() {
         return marked(this.form.contentText)
       }
+    },
+    watch: {
+      doc: {
+        immediate: true,
+        handler(newVal) {
+          this.UPDATE_CONTENT_TEXT(newVal.content);
+          this.UPDATE_TITLE_TEXT(newVal.title);
+        }
+      },
     }
   }
 </script>
