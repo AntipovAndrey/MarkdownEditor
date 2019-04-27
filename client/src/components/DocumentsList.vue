@@ -14,11 +14,11 @@
   export default {
     name: 'DocumentsList',
     mounted() {
-      this.$store.dispatch('loadDocumentsList')
+      this.loadDocumentsList()
     },
     computed: mapState(['documents']),
     methods: {
-      ...mapActions(['selectDocument']),
+      ...mapActions(['selectDocument', 'loadDocumentsList']),
     }
   }
 </script>

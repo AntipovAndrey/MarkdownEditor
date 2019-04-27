@@ -2,22 +2,23 @@
     <div id="container">
         <div id="left">
             <DocumentsList/>
-            <a href="#">New Document</a>
+            <div id="newDocumentLink">
+                <router-link to="/new">New Document</router-link>
+            </div>
         </div>
         <div id="right">
-            <DocumentViewer/>
+            <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
   import DocumentsList from './components/DocumentsList.vue'
-  import DocumentViewer from './components/DocumentViewer.vue'
 
   export default {
     name: 'app',
     components: {
-      DocumentsList, DocumentViewer
+      DocumentsList
     },
   }
 
@@ -52,5 +53,10 @@
     #right {
         flex: 4 0 0;
         background-color: #E9E9E9;
+    }
+
+    #newDocumentLink {
+        padding: 20px;
+        background: #fbfbfb;
     }
 </style>

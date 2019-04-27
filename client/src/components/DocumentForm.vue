@@ -1,13 +1,19 @@
 <template>
-    <div id="editor">
-        <div id="markdownEditor">
-            <label>
-                <textarea v-model="editingMarkdown"></textarea>
-            </label>
+    <div id="markdownForm">
+        <label>
+            <input id="titleInput" type="text" v-model="editingTitle">
+        </label>
+        <div id="editor">
+            <div id="markdownEditor">
+                <label>
+                    <textarea id="markdownInput" v-model="editingMarkdown"></textarea>
+                </label>
+            </div>
+            <div id="markdownPreview">
+                <div v-html="compiledMarkdown"></div>
+            </div>
         </div>
-        <div id="markdownPreview">
-            <div v-html="compiledMarkdown"></div>
-        </div>
+        <button v-on:click="saveForm" id="submitButton">Submit</button>
     </div>
 </template>
 
@@ -19,10 +25,14 @@
     name: 'DocumentForm',
     props: ['doc'],
     methods: {
-      ...mapMutations(['UPDATE_TEXT_INPUT'])
+      ...mapMutations(['UPDATE_CONTENT_TEXT', 'UPDATE_TITLE_TEXT']),
+      saveForm() {
+        this.$emit('submitted', {title: this.editingTitle, content: this.editingMarkdown})
+      }
     },
     mounted() {
-      this.UPDATE_TEXT_INPUT(this.doc.content)
+      this.UPDATE_CONTENT_TEXT(this.doc.content);
+      this.UPDATE_TITLE_TEXT(this.doc.title);
     },
     computed: {
       ...mapState(['form']),
@@ -31,7 +41,15 @@
           return this.form.contentText
         },
         set(value) {
-          this.UPDATE_TEXT_INPUT(value)
+          this.UPDATE_CONTENT_TEXT(value)
+        }
+      },
+      editingTitle: {
+        get() {
+          return this.form.titleText
+        },
+        set(value) {
+          this.UPDATE_TITLE_TEXT(value)
         }
       },
       compiledMarkdown() {
@@ -46,7 +64,7 @@
     #editor {
         display: flex;
         flex-direction: row;
-        height: 600px;
+        height: 500px;
     }
 
     #markdownEditor {
@@ -61,7 +79,7 @@
         overflow: scroll;
     }
 
-    textarea {
+    #markdownInput {
         display: inline-block;
         height: 100%;
         width: 100%;
@@ -77,7 +95,28 @@
         padding: 20px;
     }
 
-    code {
-        color: #f66;
+    #titleInput {
+        width: 100%;
+        vertical-align: top;
+        box-sizing: border-box;
+        border: none;
+        border-right: 1px solid #ccc;
+        resize: none;
+        outline: none;
+        background-color: #f6f6f6;
+        font-size: 1.5em;
+        padding: 8px;
+        margin-bottom: 12px;
+    }
+
+    #submitButton {
+        border: none;
+        margin-top: 20px;
+        padding: 5px;
+        text-transform: uppercase;
+        font-size: 1.2em;
+        background: #1d1d1d;
+        color: #f9f9f9;
+        cursor: pointer;
     }
 </style>

@@ -4,7 +4,10 @@ export default {
     contentText: '',
   },
   mutations: {
-    UPDATE_TEXT_INPUT: (state, text) => {
+    UPDATE_TITLE_TEXT: (state, text) => {
+      state.titleText = text;
+    },
+    UPDATE_CONTENT_TEXT: (state, text) => {
       state.contentText = text;
     },
   },

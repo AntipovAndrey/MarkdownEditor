@@ -1,4 +1,5 @@
 import markdownApi from '../api/markdown'
+import router from '../router'
 
 export default {
   state: {
@@ -12,6 +13,9 @@ export default {
     },
     ADD_LOADED_DOCUMENT: (state, {id, document}) => {
       state._loadedDocuments[id] = document;
+      if (state.currentDocument) {
+        state.currentDocument = state._loadedDocuments[state.currentDocument.id]
+      }
     },
     LOAD_DOCUMENTS_LIST: (state, documentPreviews) => {
       state.availableDocuments = documentPreviews;
@@ -27,13 +31,27 @@ export default {
           commit('ADD_LOADED_DOCUMENT', {id: documentId, document: doc});
         }
       }
-      commit('SELECT_DOCUMENT', doc)
+      commit('SELECT_DOCUMENT', doc);
+      router.push('edit')
     },
     loadDocumentsList: async ({commit}) => {
       const {status, data} = await markdownApi.get();
       if (status < 300) {
         commit('LOAD_DOCUMENTS_LIST', data);
       }
+    },
+    updateCurrentDocument: async ({commit, dispatch, state}, doc) => {
+      const {status} = await markdownApi.patch(state.currentDocument.id, doc);
+      if (status < 300) {
+        commit('ADD_LOADED_DOCUMENT', {
+          id: state.currentDocument.id,
+          document: {
+            ...state.currentDocument,
+            ...doc
+          }
+        });
+      }
+      dispatch('loadDocumentsList');
     }
   },
 };
