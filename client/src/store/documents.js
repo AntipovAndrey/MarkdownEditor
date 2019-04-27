@@ -59,6 +59,16 @@ export default {
         dispatch('loadDocumentsList');
         router.push('new');
       }
+    },
+    deleteDocument: async ({dispatch, commit, state}, documentId) => {
+      const {status} = await markdownApi.delete(documentId);
+      if (status < 300) {
+        commit('ADD_LOADED_DOCUMENT', {id: documentId, document: undefined});
+        if (state.currentDocument && state.currentDocument.id === documentId) {
+          commit('SELECT_DOCUMENT', undefined);
+        }
+        dispatch('loadDocumentsList');
+      }
     }
   },
 };
